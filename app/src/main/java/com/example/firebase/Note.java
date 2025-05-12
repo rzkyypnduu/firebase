@@ -4,7 +4,6 @@ public class Note {
     private String title;
     private String description;
     public Note() {
-
     }
     public Note(String title, String description) {
         this.title = title;
