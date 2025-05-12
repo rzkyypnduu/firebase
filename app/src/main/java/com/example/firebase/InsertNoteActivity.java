@@ -48,7 +48,7 @@ public class InsertNoteActivity extends AppCompatActivity implements View.OnClic
 
         // Initialize Firebase Auth and Database
         mAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance("https://pamfirebase-5670c-default-rtdb.asia-southeast1.firebasedatabase.app/");
         databaseReference = firebaseDatabase.getReference();
 
         // Initialize Note

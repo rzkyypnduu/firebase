@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText etPass;
     private Button btnMasuk;
     private Button btnDaftar;
+    private Button btnAutoLogin; // Add a button for automatic login
     private FirebaseAuth mAuth;
 
     @Override
@@ -37,11 +38,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         etPass = findViewById(R.id.et_pass);
         btnMasuk = findViewById(R.id.btn_masuk);
         btnDaftar = findViewById(R.id.btn_daftar);
+        btnAutoLogin = findViewById(R.id.btn_auto_login); // Initialize the auto login button
 
         mAuth = FirebaseAuth.getInstance();
 
         btnMasuk.setOnClickListener(this);
         btnDaftar.setOnClickListener(this);
+        btnAutoLogin.setOnClickListener(this); // Set listener for auto login
     }
 
     @Override
@@ -59,6 +62,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             login(etEmail.getText().toString(), etPass.getText().toString());
         } else if (id == R.id.btn_daftar) {
             signUp(etEmail.getText().toString(), etPass.getText().toString());
+        } else if (id == R.id.btn_auto_login) {
+            // Trigger automatic login with pre-defined credentials
+            autoLogin();
         }
     }
 
@@ -105,6 +111,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+                    }
+                });
+    }
+
+    private void autoLogin() {
+        String predefinedEmail = "user@cek.com";
+        String predefinedPassword = "rahasia";
+
+        mAuth.signInWithEmailAndPassword(predefinedEmail, predefinedPassword)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Auto-login success, update UI with the signed-in user's information
+                            Log.d(TAG, "Auto-login success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(MainActivity.this, "Welcome, " + user.getEmail(), Toast.LENGTH_SHORT).show();
+                            updateUI(user);
+                        } else {
+                            // If auto-login fails, display a message
+                            Log.w(TAG, "Auto-login failed", task.getException());
                             Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }

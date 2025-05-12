@@ -42,5 +42,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/signup" />
+        <Button
+            android:id="@+id/btn_auto_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Auto Login"
+            android:layout_marginTop="20dp"/>
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
